@@ -1,0 +1,22 @@
+services:
+  postgres:
+    # Debian-based official image (not -alpine): glibc + full locale support,
+    # i.e. the same runtime characteristics as a typical production Postgres.
+    image: postgres:17
+    container_name: scheduler-pg
+    environment:
+      POSTGRES_USER: scheduler
+      POSTGRES_PASSWORD: scheduler
+      POSTGRES_DB: scheduler
+    ports:
+      # HOST:CONTAINER. Published on 5433 to avoid clashing with a Postgres
+      # already installed natively on the developer's machine. Inside the
+      # container Postgres still listens on the standard 5432.
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scheduler -d scheduler"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+    # No named volume on purpose: every `docker compose down` gives a clean
+    # database, which is what we want for a reproducible demo.

@@ -1,0 +1,9 @@
+# Postgres driver. psycopg 3 (not psycopg2) for native support of
+# server-side parameter binding and connection context managers.
+# The [binary] extra ships a precompiled libpq, so no C toolchain is needed.
+psycopg[binary]==3.3.4
+
+# Test framework. The suite demonstrates no duplicate executions under
+# duplicate ticks, safe concurrent draining, retry with backoff, and
+# crash recovery.
+pytest==9.1.1
